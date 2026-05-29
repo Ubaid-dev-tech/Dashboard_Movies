@@ -19,7 +19,7 @@ SOFT_SAGE    = "#B2C9AD"
 CARD_BG      = "#F5ECD7"
 TEXT_COLOR   = "#3B2A1A"
 BORDER_COLOR = "#D4B896"
-SIDEBAR_TEXT = "#B75B61"   # dark for sidebar labels
+SIDEBAR_TEXT = "#3B2A1A"   # dark for sidebar labels
 
 PALETTE_MAIN = [SAGE_GREEN, LIGHT_BROWN, MUTED_GOLD, SOFT_SAGE,
                 "#A0826D", "#8FBC8F", "#C49A6C", "#6B8F71",
@@ -47,9 +47,10 @@ st.markdown(f"""
 
   html, body, [class*="css"] {{
       font-family: 'Lato', sans-serif;
-      background-color: {CREAM};
-      color: {TEXT_COLOR};
+      /* No forced background — respect Streamlit light/dark theme */
   }}
+
+
 
   /* ── Header banner ── */
   .dashboard-header {{
@@ -80,70 +81,83 @@ st.markdown(f"""
       font-size: 1.7rem !important; color: {DARK_BROWN} !important;
   }}
 
-  /* ── Chart cards ── */
-  .chart-title {{
-      font-family: 'Playfair Display', serif; font-size: 1.05rem;
-      font-weight: 700; color: #EB75B61; margin-bottom: 4px;
-  }}
-  .chart-desc {{
-      font-size: 0.82rem; color: #B75B61;
-      margin-bottom: 10px; font-style: italic; line-height: 1.4;
-  }}
+  /* chart title/desc use inline styles — see chart_card() */
 
-  /* ── SIDEBAR — eye-catching labels & text ── */
+  /* ── SIDEBAR background ── */
   section[data-testid="stSidebar"] {{
       background: linear-gradient(180deg, #f2e4c8 0%, #e8d5a8 100%);
       border-right: 3px solid {DARK_BROWN};
   }}
-  /* All plain text inside sidebar */
+  /* Every text element inside sidebar */
+  section[data-testid="stSidebar"],
   section[data-testid="stSidebar"] p,
   section[data-testid="stSidebar"] span,
-  section[data-testid="stSidebar"] div {{
-      color: {SIDEBAR_TEXT} !important;
+  section[data-testid="stSidebar"] div,
+  section[data-testid="stSidebar"] li,
+  section[data-testid="stSidebar"] small,
+  section[data-testid="stSidebar"] strong {{
+      color: #7A3B3B !important;
       font-weight: 600 !important;
   }}
-  /* Markdown headings h2/h3 */
+  /* Sidebar h2 */
   section[data-testid="stSidebar"] h2 {{
-      font-family: 'Playfair Display', serif;
-      color: {DARK_BROWN} !important;
-      font-size: 1.3rem !important;
-      border-bottom: 2px solid {SAGE_GREEN};
-      padding-bottom: 4px; margin-bottom: 8px;
-  }}
-  section[data-testid="stSidebar"] h3 {{
-      font-family: 'Playfair Display', serif;
-      color: {DARK_BROWN} !important;
-      font-size: 1.0rem !important;
-      background: linear-gradient(90deg, {SAGE_GREEN}22, transparent);
-      border-left: 3px solid {SAGE_GREEN};
-      padding: 4px 8px; border-radius: 0 4px 4px 0;
-      margin: 10px 0 6px 0;
-  }}
-  /* Widget labels (number_input, multiselect, date_input etc.) */
-  section[data-testid="stSidebar"] label,
-  section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] {{
-      color: {DARK_BROWN} !important;
+      font-family: 'Playfair Display', serif !important;
+      color: #7A3B3B !important;
+      font-size: 1.35rem !important;
       font-weight: 700 !important;
-      font-size: 0.88rem !important;
+      border-bottom: 2px solid {SAGE_GREEN};
+      padding-bottom: 6px; margin-bottom: 10px;
+  }}
+  /* Sidebar h3 */
+  section[data-testid="stSidebar"] h3 {{
+      font-family: 'Playfair Display', serif !important;
+      color: #7A3B3B !important;
+      font-size: 1.0rem !important;
+      font-weight: 700 !important;
+      background: linear-gradient(90deg, {SAGE_GREEN}33, transparent);
+      border-left: 4px solid {SAGE_GREEN};
+      padding: 5px 10px; border-radius: 0 5px 5px 0;
+      margin: 12px 0 6px 0;
+  }}
+  /* Widget labels */
+  section[data-testid="stSidebar"] label {{
+      color: #7A3B3B !important;
+      font-weight: 700 !important;
+      font-size: 0.9rem !important;
+  }}
+  section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {{
+      color: #7A3B3B !important;
+      font-weight: 700 !important;
+      font-size: 0.9rem !important;
+  }}
+  /* Multiselect text */
+  section[data-testid="stSidebar"] [data-baseweb="select"] span,
+  section[data-testid="stSidebar"] [data-baseweb="select"] div,
+  section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
+      color: #7A3B3B !important;
+      font-weight: 600 !important;
   }}
   /* Input boxes */
-  section[data-testid="stSidebar"] input,
-  section[data-testid="stSidebar"] .stNumberInput input {{
+  section[data-testid="stSidebar"] input {{
       background: #fffaf2 !important;
       border: 1.5px solid {BORDER_COLOR} !important;
-      color: {DARK_BROWN} !important;
+      color: #7A3B3B !important;
       font-weight: 600 !important;
+      border-radius: 6px !important;
   }}
-  
- 
+  /* Sidebar divider */
+  section[data-testid="stSidebar"] hr {{
+      border-color: {DARK_BROWN} !important; opacity: 0.4;
+  }}
   /* Reset button */
   section[data-testid="stSidebar"] .stButton > button {{
-      background: {DARK_BROWN}; color: {CREAM};
-      font-weight: 700; border-radius: 8px; border: none;
-      padding: 8px; letter-spacing: 0.04em;
+      background: {DARK_BROWN} !important; color: {CREAM} !important;
+      font-weight: 700 !important; border-radius: 8px !important;
+      border: none !important; padding: 10px !important;
+      letter-spacing: 0.05em; font-size: 0.9rem !important;
   }}
   section[data-testid="stSidebar"] .stButton > button:hover {{
-      background: {SAGE_GREEN};
+      background: {SAGE_GREEN} !important;
   }}
 
   /* ── Download buttons ── */
@@ -386,18 +400,33 @@ if df2.empty:
 # CHART CARD HELPER
 # ─────────────────────────────────────────────
 def chart_card(title, description, fig, fname):
+    # Title — var(--text-color) adapts to Streamlit light/dark theme automatically
     st.markdown(
-        f'<div class="chart-title">{title}</div>',
+        f'''<p style="
+            font-family: Playfair Display, serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-color, #5C3D2E);
+            margin: 0 0 6px 0;
+            padding: 0;
+        ">{title}</p>''',
         unsafe_allow_html=True
     )
-
+    # Chart
     st.pyplot(fig)
-
+    # Description — orange-red color exactly as in dark mode screenshot
     st.markdown(
-        f'<div class="chart-desc">{description}</div>',
+        f'''<p style="
+            font-size: 0.9rem;
+            color: #D4744A;
+            font-style: italic;
+            font-weight: 500;
+            line-height: 1.75;
+            margin: 6px 0 10px 0;
+            padding: 0;
+        ">{description}</p>''',
         unsafe_allow_html=True
     )
-
     st.download_button(
         label="⬇ Download Chart",
         data=fig_to_bytes(fig),
@@ -405,8 +434,8 @@ def chart_card(title, description, fig, fname):
         mime="image/png",
         key=f"dl_{fname}",
     )
-
     plt.close(fig)
+
 # ─────────────────────────────────────────────
 # ROW 1: Top Genres  |  Rating Distribution
 # ─────────────────────────────────────────────
@@ -637,12 +666,38 @@ full_d['budget']  = (df2['budget'].values/1e6).round(1).astype(str)  if 'budget'
 st.dataframe(full_d, use_container_width=True, height=320)
 
 # ─────────────────────────────────────────────
-# FOOTER
+# FOOTER — styled info card (matches dashboard style)
 # ─────────────────────────────────────────────
 st.divider()
-st.markdown(
-    "<p style='text-align:center;color:#A08060;font-size:0.8rem;'>"
-    "🎬 Movie Analytics Dashboard · TMDB 5000 Dataset · "
-    "Built with Streamlit & Matplotlib · </p>",
-    unsafe_allow_html=True
-)
+st.markdown(f"""
+<div style="
+    background-color: #F5ECD7;
+    padding: 28px 36px;
+    border-radius: 14px;
+    border-left: 5px solid #7D9B76;
+    margin-top: 10px;
+    box-shadow: 0 2px 10px rgba(92,61,46,0.08);
+">
+  <h4 style="
+      color: #5C3D2E;
+      margin-top: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.3px;
+  ">
+      📋 Dashboard Information
+  </h4>
+  <div style="color: #5C3D2E; font-size: 14px; line-height: 2.3; font-family: 'Lato', sans-serif;">
+      <b>Dataset:</b> TMDB 5000 Movies (1916–2017)<br>
+      <b>Total Records Available:</b> {len(df):,} movies<br>
+      <b>Currently Displayed:</b> {len(df2):,} movies<br>
+      <b>Chart Types:</b> Genre Bar · Rating Histogram · Revenue Scatter · Runtime Violin ·
+        Year Line · Budget Scatter · Popularity Scatter · Vote Count Histogram ·
+        Language Bar · Revenue Bar · Avg Rating Bar · Budget Distribution<br>
+      <b>Filters Available:</b> Date Range · Movie Search · Language · Genre ·
+        Rating · Budget · Revenue · Popularity · Runtime<br>
+      <b>Theme:</b> Light Brown &amp; Sage Green<br>
+      <b>Built with:</b> Streamlit &amp; Matplotlib
+  </div>
+</div>
+""", unsafe_allow_html=True)
