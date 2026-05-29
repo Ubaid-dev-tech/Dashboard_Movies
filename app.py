@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/movie_dashboard.py << 'PYEOF'
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,7 +19,7 @@ SOFT_SAGE    = "#B2C9AD"
 CARD_BG      = "#F5ECD7"
 TEXT_COLOR   = "#3B2A1A"
 BORDER_COLOR = "#D4B896"
-SIDEBAR_TEXT = "#3B2A1A"   # dark for sidebar labels
+SIDEBAR_TEXT = "#B75B61"   # dark for sidebar labels
 
 PALETTE_MAIN = [SAGE_GREEN, LIGHT_BROWN, MUTED_GOLD, SOFT_SAGE,
                 "#A0826D", "#8FBC8F", "#C49A6C", "#6B8F71",
@@ -84,10 +83,10 @@ st.markdown(f"""
   /* ── Chart cards ── */
   .chart-title {{
       font-family: 'Playfair Display', serif; font-size: 1.05rem;
-      font-weight: 700; color: {DARK_BROWN}; margin-bottom: 4px;
+      font-weight: 700; color: #EB75B61; margin-bottom: 4px;
   }}
   .chart-desc {{
-      font-size: 0.82rem; color: #7A5C3A;
+      font-size: 0.82rem; color: #B75B61;
       margin-bottom: 10px; font-style: italic; line-height: 1.4;
   }}
 
@@ -135,6 +134,8 @@ st.markdown(f"""
       color: {DARK_BROWN} !important;
       font-weight: 600 !important;
   }}
+  
+ 
   /* Reset button */
   section[data-testid="stSidebar"] .stButton > button {{
       background: {DARK_BROWN}; color: {CREAM};
@@ -385,9 +386,18 @@ if df2.empty:
 # CHART CARD HELPER
 # ─────────────────────────────────────────────
 def chart_card(title, description, fig, fname):
-    st.markdown(f'<div class="chart-title">{title}</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="chart-desc">{description}</div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="chart-title">{title}</div>',
+        unsafe_allow_html=True
+    )
+
     st.pyplot(fig)
+
+    st.markdown(
+        f'<div class="chart-desc">{description}</div>',
+        unsafe_allow_html=True
+    )
+
     st.download_button(
         label="⬇ Download Chart",
         data=fig_to_bytes(fig),
@@ -395,8 +405,8 @@ def chart_card(title, description, fig, fname):
         mime="image/png",
         key=f"dl_{fname}",
     )
-    plt.close(fig)
 
+    plt.close(fig)
 # ─────────────────────────────────────────────
 # ROW 1: Top Genres  |  Rating Distribution
 # ─────────────────────────────────────────────
@@ -633,6 +643,6 @@ st.divider()
 st.markdown(
     "<p style='text-align:center;color:#A08060;font-size:0.8rem;'>"
     "🎬 Movie Analytics Dashboard · TMDB 5000 Dataset · "
-    "Built with Streamlit & Matplotlib · Theme: Light Brown & Sage Green</p>",
+    "Built with Streamlit & Matplotlib · </p>",
     unsafe_allow_html=True
 )
