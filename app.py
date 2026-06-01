@@ -458,7 +458,8 @@ with c2:
     fig, ax = plt.subplots(figsize=(6, 4))
     sns.histplot(df2['vote_average'], bins=20, kde=True, ax=ax,
                  color=SAGE_GREEN, edgecolor=CREAM, linewidth=0.5)
-    ax.lines[0].set_color(DARK_BROWN)
+    if ax.lines:
+        ax.lines[0].set_color(DARK_BROWN)
     ax.set_xlabel("Vote Average (0–10)"); ax.set_title("Rating Distribution")
     fig.tight_layout()
     chart_card("⭐ Rating Distribution",
@@ -636,7 +637,8 @@ with c12:
     fig, ax = plt.subplots(figsize=(6, 4))
     sns.histplot(budget_fil, bins=30, ax=ax, color=MUTED_GOLD,
                  edgecolor=CREAM, linewidth=0.4, kde=True)
-    ax.lines[0].set_color(DARK_BROWN)
+    if ax.lines:
+        ax.lines[0].set_color(DARK_BROWN)
     ax.set_xlabel("Budget (Million $)"); ax.set_title("Budget Distribution (>$1M films)")
     ax.xaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"${x:.0f}M"))
     fig.tight_layout()
