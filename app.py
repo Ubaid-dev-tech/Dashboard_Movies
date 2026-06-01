@@ -98,6 +98,21 @@ st.markdown(f"""
   section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
       color: #7A3B3B !important; font-weight: 600 !important;
   }}
+  /* Placeholder text in search/select dropdowns */
+  section[data-testid="stSidebar"] [data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
+  section[data-testid="stSidebar"] input::placeholder {{
+      color: #D4744A !important; font-weight: 600 !important;
+  }}
+  section[data-testid="stSidebar"] [aria-placeholder],
+  section[data-testid="stSidebar"] [placeholder] {{
+      color: #D4744A !important;
+  }}
+  /* Target the actual placeholder text in multiselect */
+  section[data-testid="stSidebar"] [data-baseweb="select"] > div > div[aria-expanded] span[aria-live],
+  section[data-testid="stSidebar"] [data-baseweb="select"] .css-1wa3eu0-placeholder,
+  section[data-testid="stSidebar"] [class*="placeholder"] {{
+      color: #D4744A !important; font-weight: 600 !important;
+  }}
   section[data-testid="stSidebar"] input {{
       background: #fffaf2 !important; border: 1.5px solid {BORDER_COLOR} !important;
       color: #7A3B3B !important; font-weight: 600 !important; border-radius: 6px !important;
@@ -107,7 +122,17 @@ st.markdown(f"""
       font-weight: 700 !important; border-radius: 8px !important;
       border: none !important; padding: 10px !important; font-size: 0.9rem !important;
   }}
+  section[data-testid="stSidebar"] .stButton > button p,
+  section[data-testid="stSidebar"] .stButton > button span,
+  section[data-testid="stSidebar"] .stButton > button div {{
+      color: {CREAM} !important; font-weight: 700 !important;
+  }}
   section[data-testid="stSidebar"] .stButton > button:hover {{ background: {SAGE_GREEN} !important; }}
+  section[data-testid="stSidebar"] .stButton > button:hover p,
+  section[data-testid="stSidebar"] .stButton > button:hover span,
+  section[data-testid="stSidebar"] .stButton > button:hover div {{
+      color: {CREAM} !important;
+  }}
 
   .stDownloadButton > button {{
       background: {SAGE_GREEN}; color: white; border: none;
@@ -256,6 +281,23 @@ st.markdown(f"""
       <b>Currently Displayed:</b> {len(df2):,} movies<br>
       <b>Files:</b> app.py · charts.py · filters.py<br>
       <b>Theme:</b> Light Brown &amp; Sage Green · Built with Streamlit &amp; Matplotlib
+  </div>
+  <div style="margin-top:16px;border-top:1px solid {BORDER_COLOR};padding-top:14px;">
+      <b style="color:{DARK_BROWN};font-size:14px;">📊 Charts in this Dashboard:</b>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;margin-top:8px;font-size:13px;color:{DARK_BROWN};">
+          <span>🎭 Top 10 Genres</span>
+          <span>⭐ Rating Distribution</span>
+          <span>💰 Revenue vs Rating</span>
+          <span>⏱️ Runtime by Rating Category</span>
+          <span>📅 Movies per Year</span>
+          <span>💵 Budget vs Revenue</span>
+          <span>🔥 Popularity vs Rating</span>
+          <span>🗳️ Vote Count Distribution</span>
+          <span>🌐 Top 10 Original Languages</span>
+          <span>📈 Revenue by Year</span>
+          <span>🏆 Average Rating by Genre</span>
+          <span>💸 Budget Distribution</span>
+      </div>
   </div>
 </div>
 """, unsafe_allow_html=True)
