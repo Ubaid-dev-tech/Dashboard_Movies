@@ -19,13 +19,41 @@ LANGUAGE_NAMES = {
 def render_filters(df):
     """Render all sidebar filters and return filtered dataframe + filter state."""
 
+    # ── Pre-compute defaults (must happen BEFORE widgets are drawn) ──
+    min_date        = df['release_date'].min().date()
+    max_date        = df['release_date'].max().date()
+    budget_max_raw  = float(df['budget'].max())
+    revenue_max_raw = float(df['revenue'].max())
+    pop_min_raw     = float(df['popularity'].min())
+    pop_max_raw     = float(df['popularity'].max())
+    rt_min_raw      = int(df['runtime'].min())
+    rt_max_raw      = int(df['runtime'].max())
+
+    # ── Reset flag: apply defaults BEFORE any widget is rendered ──────
+    # Streamlit forbids setting a widget's key after it has been drawn.
+    # So we set the session_state values here (before drawing), then clear the flag.
+    if st.session_state.pop("_do_reset", False):
+        st.session_state["start_date"]   = min_date
+        st.session_state["end_date"]     = max_date
+        st.session_state["search_movie"] = []
+        st.session_state["lang_filter"]  = []
+        st.session_state["genre_filter"] = []
+        st.session_state["rating_min"]   = 0.0
+        st.session_state["rating_max"]   = 10.0
+        st.session_state["budget_min"]   = 0.0
+        st.session_state["budget_max"]   = round(budget_max_raw / 1e6, 1)
+        st.session_state["rev_min"]      = 0.0
+        st.session_state["rev_max"]      = round(revenue_max_raw / 1e6, 1)
+        st.session_state["pop_min"]      = round(pop_min_raw, 1)
+        st.session_state["pop_max"]      = round(pop_max_raw, 1)
+        st.session_state["rt_min"]       = rt_min_raw
+        st.session_state["rt_max"]       = rt_max_raw
+
     st.sidebar.markdown("## 🔍 Filters")
     st.sidebar.markdown("All filters apply to **every chart simultaneously**.")
 
     # 1. DATE RANGE
     st.sidebar.markdown("### 📅 Date Range")
-    min_date = df['release_date'].min().date()
-    max_date = df['release_date'].max().date()
     start_date = st.sidebar.date_input("Start Date", value=min_date,
                                         min_value=min_date, max_value=max_date,
                                         key="start_date")
@@ -58,13 +86,6 @@ def render_filters(df):
     selected_genres = st.sidebar.multiselect("Select Genres", all_genres, key="genre_filter")
 
     # 5. NUMERICAL RANGES
-    budget_max_raw  = float(df['budget'].max())
-    revenue_max_raw = float(df['revenue'].max())
-    pop_min_raw     = float(df['popularity'].min())
-    pop_max_raw     = float(df['popularity'].max())
-    rt_min_raw      = int(df['runtime'].min())
-    rt_max_raw      = int(df['runtime'].max())
-
     st.sidebar.markdown("### ⭐ Rating Range")
     rc1, rc2 = st.sidebar.columns(2)
     min_rating = rc1.number_input("Min Rating", 0.0, 10.0, 0.0, 0.1, format="%.1f", key="rating_min")
@@ -92,6 +113,8 @@ def render_filters(df):
 
     st.sidebar.divider()
     if st.sidebar.button("🔄 Reset All Filters", use_container_width=True, key="reset_btn"):
+        # Set the flag — defaults are applied at the TOP of the next run, before widgets render
+        st.session_state["_do_reset"] = True
         st.rerun()
 
     # APPLY FILTERS
